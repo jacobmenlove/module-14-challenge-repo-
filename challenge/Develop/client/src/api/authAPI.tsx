@@ -1,9 +1,17 @@
+import axios from 'axios';
 import { UserLogin } from "../interfaces/UserLogin";
 
 const login = async (userInfo: UserLogin) => {
-  // TODO: make a POST request to the login route
-}
+  try {
+    
+    const response = await axios.post('/auth/login', userInfo);
 
-
+    return response.data.token;
+  } catch (error) {
+    
+    console.error('Login failed:', error);
+    throw new Error('Invalid username or password');
+  }
+};
 
 export { login };
