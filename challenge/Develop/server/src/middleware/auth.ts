@@ -20,7 +20,7 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
   const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.substring(7) : null;
 
   if (token == null) {
-    return res.sendStatus(401); /
+    return res.sendStatus(401); 
   }
 
   try {

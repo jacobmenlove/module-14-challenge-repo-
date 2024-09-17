@@ -1,8 +1,11 @@
-import { User } from '../models/user.js';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteUser = exports.updateUser = exports.createUser = exports.getUserById = exports.getAllUsers = void 0;
+const user_js_1 = require("../models/user.js");
 // GET /Users
-export const getAllUsers = async (_req, res) => {
+const getAllUsers = async (_req, res) => {
     try {
-        const users = await User.findAll({
+        const users = await user_js_1.User.findAll({
             attributes: { exclude: ['password'] }
         });
         res.json(users);
@@ -11,11 +14,12 @@ export const getAllUsers = async (_req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+exports.getAllUsers = getAllUsers;
 // GET /Users/:id
-export const getUserById = async (req, res) => {
+const getUserById = async (req, res) => {
     const { id } = req.params;
     try {
-        const user = await User.findByPk(id, {
+        const user = await user_js_1.User.findByPk(id, {
             attributes: { exclude: ['password'] }
         });
         if (user) {
@@ -29,23 +33,25 @@ export const getUserById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+exports.getUserById = getUserById;
 // POST /Users
-export const createUser = async (req, res) => {
+const createUser = async (req, res) => {
     const { username, password } = req.body;
     try {
-        const newUser = await User.create({ username, password });
+        const newUser = await user_js_1.User.create({ username, password });
         res.status(201).json(newUser);
     }
     catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
+exports.createUser = createUser;
 // PUT /Users/:id
-export const updateUser = async (req, res) => {
+const updateUser = async (req, res) => {
     const { id } = req.params;
     const { username, password } = req.body;
     try {
-        const user = await User.findByPk(id);
+        const user = await user_js_1.User.findByPk(id);
         if (user) {
             user.username = username;
             user.password = password;
@@ -60,11 +66,12 @@ export const updateUser = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+exports.updateUser = updateUser;
 // DELETE /Users/:id
-export const deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
     const { id } = req.params;
     try {
-        const user = await User.findByPk(id);
+        const user = await user_js_1.User.findByPk(id);
         if (user) {
             await user.destroy();
             res.json({ message: 'User deleted' });
@@ -77,3 +84,4 @@ export const deleteUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+exports.deleteUser = deleteUser;
