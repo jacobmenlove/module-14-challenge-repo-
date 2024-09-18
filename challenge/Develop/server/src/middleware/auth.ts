@@ -26,8 +26,8 @@ export const authenticateToken = async (req: Request, res: Response, next: NextF
   try {
     const user = await verifyToken(token);
     req.user = user; 
-    next(); 
+    return next(); 
   } catch (err) {
-    return res.sendStatus(403); 
+    return res.sendStatus(403);
   }
 };
