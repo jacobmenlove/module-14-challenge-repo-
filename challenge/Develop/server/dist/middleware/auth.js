@@ -1,25 +1,20 @@
+// import { Request, Response, NextFunction } from 'express';
+// import jwt from 'jsonwebtoken';
 import jwt from 'jsonwebtoken';
-const verifyToken = (token) => {
-    return new Promise((resolve, reject) => {
-        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-            if (err)
-                return reject(err);
-            resolve(user);
+export const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+        const secretKey = process.env.JWT_SECRET_KEY || '';
+        jwt.verify(token, secretKey, (err, user) => {
+            if (err) {
+                return res.sendStatus(403); // Forbidden
+            }
+            req.user = user;
+            return next();
         });
-    });
-};
-export const authenticateToken = async (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.substring(7) : null;
-    if (token == null) {
-        return res.sendStatus(401);
     }
-    try {
-        const user = await verifyToken(token);
-        req.user = user;
-        return next();
-    }
-    catch (err) {
-        return res.sendStatus(403);
+    else {
+        res.sendStatus(401); // Unauthorized
     }
 };

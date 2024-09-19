@@ -6,6 +6,9 @@ const login = async (userInfo: UserLogin) => {
     
     const response = await axios.post('/auth/login', userInfo);
 
+    console.log(response);
+    
+
     return response.data.token;
   } catch (error) {
     
