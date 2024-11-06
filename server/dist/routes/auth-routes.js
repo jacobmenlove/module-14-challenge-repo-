@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { User } from '../models/index.js';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 export const login = async (req, res) => {
     const { username, password } = req.body;
     const user = await User.findOne({ where: { username } });
